@@ -1,15 +1,14 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import Rotas from "./routes";
+import { GlobalCss } from "./styles";
+import Header from "./components/Header";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="contaier">
-        <h1>Viva experiências gastronômicas no conforto da sua casa</h1>
-      </div>
-      <Routes>
-        <Route path="/" element={<div>Home</div>} />
-        <Route path="/sobre" element={<div>Sobre</div>} />
-      </Routes>
+      <GlobalCss />
+      <Header />
+      <Rotas />
     </BrowserRouter>
   );
 }
