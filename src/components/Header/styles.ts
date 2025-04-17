@@ -4,10 +4,6 @@ import { colors } from "../../styles";
 export const Header = styled.header`
     padding-top: 64px;
     padding-bottom: 40px;
-    height: 384px;
-    flex-direction: column;
-    display: flex;
-    align-items: center;
     text-align: center;
     background-repeat: no-repeat;
     background-size: cover;

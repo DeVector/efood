@@ -8,10 +8,13 @@ export const colors = {
 }
 
 export const GlobalCss = createGlobalStyle`
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Roboto, sans-serif;
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Roboto, sans-serif;
+    }
+    
 
     .container{
         max-width: 1024px;

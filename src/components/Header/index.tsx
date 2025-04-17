@@ -8,7 +8,7 @@ const Header = () => {
         <S.Header style={{ backgroundImage: `url(${backHeader})` }}>
             <div className="container">
               <img src={logo} alt="Logo efood" />
-              <h1>Viva experiências gastronômicas <br /> no conforto da sua casa</h1>
+              <h1>Viva experiências gastronômicas no conforto da sua casa</h1>
             </div>
         </S.Header>
     )
