@@ -1,4 +1,5 @@
 import ProductList from "../../components/Product-list"
+import Header from "../../components/Header"
 import Dish from "../../models/Dish"
 
 import imgDishSushi from '../../assets/images/img_sushi.png'
@@ -58,6 +59,7 @@ const dishiesInfo: Dish[] =[
 const Home = () => {
     return (
         <>
+            <Header />
             <ProductList dishies={dishiesInfo}/>
         </>
     )
