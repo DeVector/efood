@@ -1,33 +1,27 @@
 import { useSelector } from "react-redux"
-import Dish from "../../models/Dish"
-import Product from "../Product"
+import Shop from "../Shop"
 
 import * as S from './styles'
 import { RootReducer } from "../store"
 
-export type Props = {
-    dishies: Dish[]
-}
-
-const ProductList = ({ dishies }: Props) => {
+const ShopList = () => {
     const { itens } = useSelector((state: RootReducer) => state.dishies)
+
     return(
         <S.Container>
             <div className="container">
                 <S.List>
-                    {itens.map(( dish ) => (
-                        <Product key={dish.id}
-                            title={dish.title}
+                    { itens.map((dish) => (
+                        <Shop key={dish.id}
                             image={dish.image}
+                            title={dish.title}
                             describe={dish.describe}
-                            infos={dish.infos}
-                            rate={dish.rate}
                         />
-                    ))}
+                    )) }
                 </S.List>
             </div>
         </S.Container>
     )
 }
 
-export default ProductList
+export default ShopList

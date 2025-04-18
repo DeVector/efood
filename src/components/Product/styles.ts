@@ -70,4 +70,5 @@ export const Button = styled.button`
     color: ${colors.colorOrange};
     font-size: 14px;
     font-weight: 700;
+    cursor: pointer;
 `

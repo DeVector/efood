@@ -1,6 +1,7 @@
 import * as S from './styles'
 
 import logoRate from '../../assets/images/rate.svg'
+import { Link } from 'react-router-dom'
 
 type Props = {
     title: string,
@@ -28,7 +29,10 @@ const Product = ({ title, rate, describe, infos, image }: Props) => {
                 
             </div>
             <S.Describe> {describe} </S.Describe>
-            <S.Button>Saiba mais</S.Button>
+            <Link to='/profile'>
+                <S.Button>Saiba mais</S.Button>
+            </Link>
+            
         </S.Card>
     )
 }

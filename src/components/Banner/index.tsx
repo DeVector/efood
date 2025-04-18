@@ -1,15 +1,14 @@
 import * as S from './styles'
 
-import imgBanne from '../../assets/images/img_banner.png'
-
 type Props ={
     infos: string[]
     title: string
+    image: string
 }
 
-const Banner = ({ infos, title }: Props) => {
+const Banner = ({ infos, title, image }: Props) => {
     return(
-        <S.Banner style={{ backgroundImage: `url(${imgBanne})` }}>
+        <S.Banner style={{ backgroundImage: `url(${image})` }}>
             <div className="container">
                 <S.Infos>
                     {infos.map((info) => (
