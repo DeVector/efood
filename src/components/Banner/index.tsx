@@ -3,7 +3,7 @@ import * as S from './styles'
 type Props ={
     infos: string[]
     title: string
-    image: string
+    image?: string
 }
 
 const Banner = ({ infos, title, image }: Props) => {

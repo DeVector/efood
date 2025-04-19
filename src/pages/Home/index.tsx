@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 import ProductList from "../../components/Product-list"
 import Header from "../../components/Header"
+import { Dishies } from "../Profile"
 
 
 export type Restaurante = {
@@ -12,14 +13,7 @@ export type Restaurante = {
     avaliacao: number
     descricao: string
     capa: string
-    cardapio: {
-        id: number
-        foto: string
-        preco: number
-        nome: string
-        descricao: string
-        porcao: string
-    }
+    cardapio: Dishies []
 }
 
 const Home = () => {

@@ -7,21 +7,21 @@ export type Props = {
     catalogos: Restaurante[]
 }
 
-const ProductList = ({ catalogos }: Props) => {
+export const getCatalogoTags = (catalogo: Restaurante) => {
+    const tags = []
 
-    const getCatalogoTags = (catalogo: Restaurante) => {
-        const tags = []
-
-        if (catalogo.destacado) {
-            tags.push('Destaque da semana')
-        }
-
-        if (catalogo.tipo) {
-            tags.push(catalogo.tipo)
-        }
-
-        return tags
+    if (catalogo.destacado) {
+        tags.push('Destaque da semana')
     }
+
+    if (catalogo.tipo) {
+        tags.push(catalogo.tipo)
+    }
+
+    return tags
+}
+
+const ProductList = ({ catalogos }: Props) => {
     
     return(
         <S.Container>
@@ -34,6 +34,7 @@ const ProductList = ({ catalogos }: Props) => {
                             describe={dish.descricao}
                             infos={getCatalogoTags(dish)}
                             rate={dish.avaliacao}
+                            tipo={dish.tipo}
                         />
                     ))}
                 </S.List>

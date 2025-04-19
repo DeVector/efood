@@ -8,10 +8,11 @@ type Props = {
     rate: number,
     describe: string,
     infos: string[],
-    image: string
+    image: string,
+    tipo: string
 }
 
-const Product = ({ title, rate, describe, infos, image }: Props) => {
+const Product = ({ title, rate, describe, infos, image, tipo }: Props) => {
     return(
         <S.Card>
             <S.Image src={image} alt={image} />
@@ -29,7 +30,7 @@ const Product = ({ title, rate, describe, infos, image }: Props) => {
                 
             </div>
             <S.Describe> {describe} </S.Describe>
-            <Link to='/profile'>
+            <Link to={`/profile/${tipo}`}>
                 <S.Button>Saiba mais</S.Button>
             </Link>
             

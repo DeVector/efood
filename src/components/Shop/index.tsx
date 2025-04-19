@@ -1,17 +1,17 @@
 import * as S from './styles'
 
 type Props = {
-    title: string
-    image: string
-    describe: string
+    nome: string
+    foto: string
+    descricao: string
 }
 
-const Shop = ({ title, image, describe }: Props) => {
+const Shop = ({ nome, foto, descricao }: Props) => {
     return(
         <S.Card>
-            <img className='imgWidth' src={image} alt="Imagem do prato" />
-            <S.Title>{title}</S.Title>
-            <S.Describe>{describe}</S.Describe>
+            <img className='imgWidth' src={foto} alt="Imagem do prato" />
+            <S.Title>{nome}</S.Title>
+            <S.Describe>{descricao}</S.Describe>
             <S.Button>Adicionar ao carrinho</S.Button>
         </S.Card>
     )
