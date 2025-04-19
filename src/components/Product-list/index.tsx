@@ -1,27 +1,39 @@
-import { useSelector } from "react-redux"
-import Dish from "../../models/Dish"
+import { Restaurante } from "../../pages/Home"
 import Product from "../Product"
 
 import * as S from './styles'
-import { RootReducer } from "../store"
 
 export type Props = {
-    dishies: Dish[]
+    catalogos: Restaurante[]
 }
 
-const ProductList = ({ dishies }: Props) => {
-    const { itens } = useSelector((state: RootReducer) => state.dishies)
+const ProductList = ({ catalogos }: Props) => {
+
+    const getCatalogoTags = (catalogo: Restaurante) => {
+        const tags = []
+
+        if (catalogo.destacado) {
+            tags.push('Destaque da semana')
+        }
+
+        if (catalogo.tipo) {
+            tags.push(catalogo.tipo)
+        }
+
+        return tags
+    }
+    
     return(
         <S.Container>
             <div className="container">
                 <S.List>
-                    {itens.map(( dish ) => (
+                    {catalogos.map(( dish ) => (
                         <Product key={dish.id}
-                            title={dish.title}
-                            image={dish.image}
-                            describe={dish.describe}
-                            infos={dish.infos}
-                            rate={dish.rate}
+                            title={dish.titulo}
+                            image={dish.capa}
+                            describe={dish.descricao}
+                            infos={getCatalogoTags(dish)}
+                            rate={dish.avaliacao}
                         />
                     ))}
                 </S.List>
