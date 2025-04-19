@@ -9,8 +9,8 @@ type Props = {
 
 const Shop = ({ nome, foto, descricao, onClick }: Props) => {
     const getDescricao = (descricao: string) => {
-        if (descricao.length > 95) {
-            return descricao.slice(0, 97) + '...'
+        if (descricao.length > 110) {
+            return descricao.slice(0, 103) + '...'
         }
         return descricao
     }
