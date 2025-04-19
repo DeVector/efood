@@ -1,9 +1,9 @@
+import { useState } from "react"
 import { Dishies } from "../../pages/Profile"
 import Shop from "../Shop"
 
 import * as S from './styles'
 
-import imgPizza from '../../assets/images/img_pizza.png'
 import btnClose from '../../assets/images/btn_close.png'
 
 type Props = {
@@ -11,6 +11,14 @@ type Props = {
 }
 
 const ShopList = ({ dishies }: Props) => {
+    const [modal, setModal] = useState<null | Dishies>(null)
+
+    const formatarPreco = (preco = 0) => {
+        return new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        }).format(preco)
+      }
 
     return(
         <>
@@ -18,31 +26,45 @@ const ShopList = ({ dishies }: Props) => {
                 <div className="container">
                     <S.List>
                         { dishies.map((dish) => (
-                            <Shop key={dish.id}
+                            <Shop 
+                                key={dish.id}
                                 foto={dish.foto}
                                 nome={dish.nome}
                                 descricao={dish.descricao}
+                                onClick={() => setModal(dish)}
                             />
                         ))}
                     </S.List>
                 </div>
             </S.Container>
-            <S.Modal>
+            <S.Modal className={modal ? 'visible' : ''}>
                 <S.ModalContent>
-                    <img className="btn-close" src={btnClose} alt="" />
+                    <img 
+                        className="btn-close" 
+                        src={btnClose} 
+                        alt="" 
+                        onClick={() => setModal(null)}
+                    />
                     <div className="container">
-                        <img src={imgPizza} alt="" />
+                        <img src={modal?.foto} alt="" />
                         <S.ModalInfo>
-                            <h3>Nome do prato</h3>
-                            <p>A pizza Margherita é uma pizza clássica da culinária italiana, reconhecida por sua simplicidade e sabor inigualável. Ela é feita com uma base de massa fina e crocante, coberta com molho de tomate fresco, queijo mussarela de alta qualidade, manjericão fresco e azeite de oliva extra-virgem. A combinação de sabores é perfeita, com o molho de tomate suculento e ligeiramente ácido, o queijo derretido e cremoso e as folhas de manjericão frescas, que adicionam um toque de sabor herbáceo. É uma pizza simples, mas deliciosa, que agrada a todos os paladares e é uma ótima opção para qualquer ocasião.
+                            <h3>{modal?.nome}</h3>
+                            <p>{modal?.descricao}
                             </p>
-                            <p>Serve: de 2 a 3 pessoas</p>
-                            <button>Adicionar ao carrinho - R$ 60,90</button>
+                            <p>Serve: {modal?.porcao}</p>
+                            <button>
+                                Adicionar ao carrinho - {formatarPreco(modal?.preco)}
+                            </button>
                         </S.ModalInfo>
                     </div>
                     
                 </S.ModalContent>
-                <div className="overlay"></div>
+                <div 
+                    className="overlay"
+                    onClick={() => setModal(null)}
+                >
+
+                </div>
             </S.Modal>
         </>
     )
