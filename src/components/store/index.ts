@@ -1,10 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit"
 
-import dishiesReducer from './reducers/Dish'
-
 const store = configureStore({
     reducer:{
-        dishies: dishiesReducer
+        
     }
 })
 
