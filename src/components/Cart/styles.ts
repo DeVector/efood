@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import btnDeleta from '../../assets/images/btn_trach.svg'
 
-import { colors } from "../../styles";
+import { breakpoints, colors } from "../../styles";
 
 export const Overlay = styled.div`
     position: absolute;
@@ -35,6 +35,10 @@ export const SideBar = styled.aside`
     z-index: 1;
     max-width: 360px;
     width: 100%;
+
+    @media (max-width: ${breakpoints.tablet}) {
+        max-width: 320px;
+    }
 `
 
 export const ContainerPrices = styled.div`

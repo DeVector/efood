@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../styles";
+import { breakpoints, colors } from "../../styles";
 
 export const Card = styled.div`
     background-color: ${colors.colorWhite};
@@ -17,6 +17,10 @@ export const Card = styled.div`
     .inlineImg{
       display: flex;
       justify-content: center;
+    }
+
+    @media (max-width: ${breakpoints.tablet}) {
+      max-width: 340px;
     }
 `
 
@@ -41,6 +45,10 @@ export const Image = styled.img`
   width: 471px;
   height: 217px;
   object-fit: cover;
+
+  @media (max-width: ${breakpoints.tablet}) {
+      max-width: 338px;
+  }
 `
 
 export const Title = styled.h4`

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../styles";
+import { breakpoints, colors } from "../../styles";
 
 export const Container = styled.section`
     padding-top: 80px;
@@ -12,4 +12,17 @@ export const List = styled.ul`
     grid-template-columns: 1fr 1fr;
     column-gap: 80px;
     row-gap: 48px;
+
+    @media (max-width: ${breakpoints.desktop}){
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+        padding-left: 150px;
+    }
+
+    @media (max-width: ${breakpoints.tablet}) {
+        padding-left: 20px;
+        column-gap: 0;
+        row-gap: 28px;
+    }
 `

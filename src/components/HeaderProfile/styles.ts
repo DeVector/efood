@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../styles";
+import { breakpoints, colors } from "../../styles";
 
 export const Header = styled.header`
     padding-top: 64px;
@@ -23,5 +23,21 @@ export const HeaderContainer = styled.div`
         text-decoration: none;
         color: ${colors.colorRed};
         cursor: pointer;
+    }
+
+    @media (max-width: ${breakpoints.desktop}){
+        max-width: 768px;
+    }
+
+    @media (max-width: ${breakpoints.tablet}) {
+        display: grid;
+        font-size: 14px;
+        text-align: center;
+        align-items: center;
+        padding-left: 90px;
+
+        a {
+            font-size: 12px;
+        }
     }
 `

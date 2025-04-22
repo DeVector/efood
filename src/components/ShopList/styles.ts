@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../styles";
+import { breakpoints, colors } from "../../styles";
 
 export const Container = styled.section`
     padding: 56px 0 120px 0;
@@ -11,6 +11,15 @@ export const List = styled.ul`
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 32px;
     row-gap: 32px;
+
+    @media (max-width: ${breakpoints.desktop}){
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: ${breakpoints.desktop}){
+        grid-template-columns: 1fr ;
+        padding-left: 30px;
+    }
 `
 
 export const Modal = styled.div`
@@ -35,6 +44,10 @@ export const Modal = styled.div`
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    @media (max-width: ${breakpoints.tablet}){
+        max-width: 344px;
     }
 `
 
@@ -63,6 +76,27 @@ export const ModalContent = styled.div`
             height: 280px;
             margin-right: 24px;
         }
+
+    }
+
+    @media (max-width: ${breakpoints.desktop}){
+        max-width: 768px;
+    }
+
+    @media (max-width: ${breakpoints.tablet}){
+        display: grid;
+        max-width: 350px;
+        max-height: 650px;
+        height: 100%;
+        margin-left: 30px;
+
+        .container {
+            display: grid;
+        }
+
+        img {
+            margin-right: 0;
+        }
     }
 `
 
@@ -90,5 +124,10 @@ export const ModalInfo = styled.div`
         background-color: ${colors.colorOrange};
         color: ${colors.colorRed};
         border: 0;
+        cursor: pointer;
+    }
+
+    @media (max-width: ${breakpoints.tablet}) {
+        max-width: 340px;
     }
 `
