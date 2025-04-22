@@ -74,3 +74,37 @@ export const SideBar = styled.aside`
         max-width: 320px;
     }
 `
+
+export const ContainerLabel = styled.div`
+    display: grid;
+    margin-bottom: 8px;
+    
+    label {
+        display: block;
+        font-size: 14px;
+        font-weight: 700;
+        color: ${colors.colorOrange};
+        margin-bottom: 8px;
+    }
+    
+    input {
+        display: block;
+        width: 100%;
+        padding: 8px;
+        background-color: ${colors.colorOrange};
+        font-size: 14px;
+        font-weight: 700;
+        border: 1px solid ${colors.colorOrange};
+        height: 32px;
+    }
+
+    IMaskInput{
+        display: block;
+        padding: 8px;
+        background-color: ${colors.colorOrange};
+        font-size: 14px;
+        font-weight: 700;
+        border: 1px solid ${colors.colorOrange};
+        height: 32px;
+    }
+`

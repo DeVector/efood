@@ -1,7 +1,7 @@
 import { IMaskInput } from "react-imask"
 import { Button } from "../Shop/styles"
-import { CartContainer, Overlay } from "../../styles"
-import { AdressInfo, ContainerLabel, InfoCepNumber } from "./styles"
+import { CartContainer, Overlay, ContainerLabel } from "../../styles"
+import { AdressInfo, InfoCepNumber } from "./styles"
 
 const Delivery = () => {
     return (
@@ -12,32 +12,32 @@ const Delivery = () => {
                 <h5>Entrega</h5>
 
                 <ContainerLabel>
-                    <label htmlFor="">Quem irá receber</label>
-                    <input type="text" />
+                    <label htmlFor="personRecive">Quem irá receber</label>
+                    <input type="text" id="personRecive" />
                 </ContainerLabel>
                 <ContainerLabel>
-                    <label htmlFor="">Endereço</label>
-                    <input type="text" />
+                    <label htmlFor="adress">Endereço</label>
+                    <input type="text" id="adress" />
                 </ContainerLabel>
                 <ContainerLabel>
-                    <label htmlFor="">Cidade</label>
-                    <input type="text" />
+                    <label htmlFor="city">Cidade</label>
+                    <input type="text" id="city" />
                 </ContainerLabel>
                 <InfoCepNumber>
                     <ContainerLabel>
-                        <label htmlFor="">CEP</label>
-                        <IMaskInput className="maskInput"
+                        <label htmlFor="cep">CEP</label>
+                        <IMaskInput id="cep" className="maskInput"
                             mask="00000-000"
                         />
                     </ContainerLabel>
                     <ContainerLabel>
-                        <label htmlFor="">Número</label>
-                        <input type="number" name="" id="" />
+                        <label htmlFor="numberHouse">Número</label>
+                        <input type="number" id="numberHouse" />
                     </ContainerLabel>
                 </InfoCepNumber>
                 <ContainerLabel>
-                    <label htmlFor="">Complemento (opcional)</label>
-                    <input type="text" />
+                    <label htmlFor="complement">Complemento (opcional)</label>
+                    <input type="text" id="complement" />
                 </ContainerLabel>
                 
                 <Button>Continuar com o pagamento</Button>
