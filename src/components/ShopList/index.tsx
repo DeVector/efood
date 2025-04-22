@@ -1,5 +1,9 @@
 import { useState } from "react"
+import { useDispatch } from "react-redux"
+
 import { Dishies } from "../../pages/Profile"
+import { add, open } from '../store/reducers/Cart'
+
 import Shop from "../Shop"
 
 import * as S from './styles'
@@ -10,15 +14,23 @@ type Props = {
     dishies: Dishies[]
 }
 
+export const formatarPreco = (preco = 0) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(preco)
+}
+
 const ShopList = ({ dishies }: Props) => {
     const [modal, setModal] = useState<null | Dishies>(null)
 
-    const formatarPreco = (preco = 0) => {
-        return new Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL'
-        }).format(preco)
-      }
+    const dispatch = useDispatch()
+
+    const addToCart = (dish: Dishies) => {
+        dispatch(add(dish))
+        setModal(null)
+        dispatch(open())
+    }
 
     return(
         <>
@@ -28,10 +40,10 @@ const ShopList = ({ dishies }: Props) => {
                         { dishies.map((dish) => (
                             <Shop 
                                 key={dish.id}
-                                foto={dish.foto}
-                                nome={dish.nome}
-                                descricao={dish.descricao}
-                                onClick={() => setModal(dish)}
+                                dish={dish}
+                                onClick={() => {
+                                    setModal(dish)
+                                }}
                             />
                         ))}
                     </S.List>
@@ -52,7 +64,7 @@ const ShopList = ({ dishies }: Props) => {
                             <p>{modal?.descricao}
                             </p>
                             <p>Serve: {modal?.porcao}</p>
-                            <button>
+                            <button onClick={() => addToCart(modal!)}>
                                 Adicionar ao carrinho - {formatarPreco(modal?.preco)}
                             </button>
                         </S.ModalInfo>

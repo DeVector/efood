@@ -18,4 +18,10 @@ export const HeaderContainer = styled.div`
     justify-content: space-between;
     font-size: 18px;
     font-weight: 900;
+
+    a {
+        text-decoration: none;
+        color: ${colors.colorRed};
+        cursor: pointer;
+    }
 `

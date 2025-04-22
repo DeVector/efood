@@ -1,36 +1,52 @@
+import { useDispatch, useSelector } from "react-redux"
+import { RootReducer } from "../store"
+
+import { close, remove } from '../store/reducers/Cart'
+
 import { Button } from "../Shop/styles"
 
-import pizza from '../../assets/images/img_pizza.png'
-
 import * as S from './styles'
+import { formatarPreco } from "../ShopList"
 
 const Cart = () => {
 
+    const { isOpen, items } = useSelector((state: RootReducer) => state.cart)
+
+    const dispatch = useDispatch()
+
+    const closeCart = () => {
+        dispatch(close())
+    }
+
+    const getTotalPrice = () => {
+        return items.reduce((acumulador, valorAtual) => {
+            return (acumulador += valorAtual.preco!)
+        }, 0)
+    }
+
+    const removeItem = (id: number) => {
+        dispatch(remove(id))
+    }
+
     return(
-        <S.CartContainer>
-            <S.Overlay />
+        <S.CartContainer className={isOpen ? 'is-open' : ''}>
+            <S.Overlay onClick={closeCart}/>
             <S.SideBar>
                 <ul>
-                    <S.CardItem>
-                        <img src={pizza} alt="" />
-                        <div>
-                            <h3>Nome do prato</h3>
-                            <span>R$ 60,90</span>
-                        </div>
-                        <button type="button" />
-                    </S.CardItem>
-                    <S.CardItem>
-                        <img src={pizza} alt="" />
-                        <div>
-                            <h3>Nome do prato</h3>
-                            <span>R$ 60,90</span>
-                        </div>
-                        <button type="button" />
-                    </S.CardItem>
+                    {items.map((item) => (
+                        <S.CardItem key={item.id}>
+                            <img src={item.foto} alt={item.nome} />
+                            <div>
+                                <h3>{item.nome}</h3>
+                                <span>{formatarPreco(item.preco)}</span>
+                            </div>
+                            <button onClick={() => {removeItem(item.id)}} type="button"/>
+                        </S.CardItem>
+                    ))}
                 </ul>
                 <S.ContainerPrices>
                     <p>Valor total</p>
-                    <p>R$ 182,70</p>
+                    <p>{formatarPreco(getTotalPrice())}</p>
                 </S.ContainerPrices>
                 <Button>Continuar com a entrega</Button>
             </S.SideBar>

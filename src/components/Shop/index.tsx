@@ -1,13 +1,14 @@
+
 import * as S from './styles'
+import { Dishies } from '../../pages/Profile'
 
 type Props = {
-    nome: string
-    foto: string
-    descricao: string
-    onClick: () => void
+    dish: Dishies
+    onClick: (dish: Dishies) => void
 }
 
-const Shop = ({ nome, foto, descricao, onClick }: Props) => {
+const Shop = ({ dish, onClick }: Props) => {
+
     const getDescricao = (descricao: string) => {
         if (descricao.length > 110) {
             return descricao.slice(0, 103) + '...'
@@ -16,10 +17,10 @@ const Shop = ({ nome, foto, descricao, onClick }: Props) => {
     }
     return(
         <S.Card>
-            <img className='imgWidth' src={foto} alt="Imagem do prato" />
-            <S.Title>{nome}</S.Title>
-            <S.Describe>{getDescricao(descricao)}</S.Describe>
-            <S.Button onClick={onClick}>Adicionar ao carrinho</S.Button>
+            <img className='imgWidth' src={dish.foto} alt="Imagem do prato" />
+            <S.Title>{dish.nome}</S.Title>
+            <S.Describe>{getDescricao(dish.descricao)}</S.Describe>
+            <S.Button onClick={() => onClick(dish)}>Adicionar ao carrinho</S.Button>
         </S.Card>
     )
 }
