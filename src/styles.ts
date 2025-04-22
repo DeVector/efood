@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 export const colors = {
     colorMilk: '#FFF8F2',
@@ -35,5 +35,42 @@ export const GlobalCss = createGlobalStyle`
         @media (max-width: ${breakpoints.tablet}) {
             max-width: 366px;
         }
+    }
+`
+
+export const Overlay = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.8;
+`
+
+export const CartContainer = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: flex-end;
+    z-index: 1;
+
+    &.is-open{
+        display: flex;
+    }
+`
+
+export const SideBar = styled.aside`
+    background-color: ${colors.colorRed};
+    padding: 16px 8px 0 8px;
+    z-index: 1;
+    max-width: 360px;
+    width: 100%;
+
+    @media (max-width: ${breakpoints.tablet}) {
+        max-width: 320px;
     }
 `

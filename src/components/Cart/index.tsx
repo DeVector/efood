@@ -7,6 +7,7 @@ import { Button } from "../Shop/styles"
 
 import * as S from './styles'
 import { formatarPreco } from "../ShopList"
+import { CartContainer, Overlay, SideBar } from "../../styles"
 
 const Cart = () => {
 
@@ -29,9 +30,9 @@ const Cart = () => {
     }
 
     return(
-        <S.CartContainer className={isOpen ? 'is-open' : ''}>
-            <S.Overlay onClick={closeCart}/>
-            <S.SideBar>
+        <CartContainer className={isOpen ? 'is-open' : ''}>
+            <Overlay onClick={closeCart}/>
+            <SideBar>
                 <ul>
                     {items.map((item) => (
                         <S.CardItem key={item.id}>
@@ -49,8 +50,8 @@ const Cart = () => {
                     <p>{formatarPreco(getTotalPrice())}</p>
                 </S.ContainerPrices>
                 <Button>Continuar com a entrega</Button>
-            </S.SideBar>
-        </S.CartContainer>
+            </SideBar>
+        </CartContainer>
     )
 }
 
