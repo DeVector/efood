@@ -9,6 +9,7 @@ import store from "./components/store";
 import Cart from "./components/Cart";
 import Delivery from "./components/Delivery";
 import Payment from "./components/Payment";
+import ConfirmPay from "./components/ConfirmPay";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Cart />
         <Delivery />
         <Payment />
+        <ConfirmPay />
       </BrowserRouter>
     </Provider>
   );
