@@ -1,10 +1,24 @@
+import { useDispatch, useSelector } from "react-redux"
+
+import { RootReducer } from "../store"
+import { closeConfirmPay } from "../store/reducers/Cart"
+
 import { CartContainer, Overlay } from "../../styles"
 import { Button } from "../Shop/styles"
 import { SideConfirm } from "./styles"
 
 const ConfirmPay = () => {
+
+    const { isOpenConfirmPay } = useSelector((state: RootReducer) => state.cart)
+
+    const dispatch = useDispatch()
+
+    const closeAsideConfirmPay = () => {
+        dispatch(closeConfirmPay())
+    }
+
     return (
-        <CartContainer className="">
+        <CartContainer className={isOpenConfirmPay ? 'is-open' : ''}>
             <Overlay />
             <SideConfirm>
                 <h2>Pedido realizado - ORDER_ID</h2>
@@ -17,7 +31,7 @@ const ConfirmPay = () => {
 
                     Esperamos que desfrute de uma deliciosa e agradável experiência gastronômica. Bom apetite!
                 </p>
-                <Button>Concluir</Button>
+                <Button onClick={closeAsideConfirmPay}>Concluir</Button>
             </SideConfirm>
         </CartContainer>
     )

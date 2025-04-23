@@ -1,15 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { Dishies } from "../../../pages/Profile";
 
 type CartState ={
     items: Dishies[]
     isOpen: boolean
+    isOpenDelivery: boolean
+    isOpenPayment: boolean
+    isOpenConfirmPay: boolean
 }
 
 const initialState: CartState = {
     items: [],
-    isOpen: false
+    isOpen: false,
+    isOpenDelivery: false,
+    isOpenPayment: false,
+    isOpenConfirmPay: false
 }
+
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
@@ -31,9 +39,39 @@ const cartSlice = createSlice({
         },
         close: (state) => {
             state.isOpen = false
+        },
+        openDelivery: (state) => {
+            state.isOpenDelivery = true
+        },
+        closeDelivery: (state) => {
+            state.isOpenDelivery = false
+        },
+        openPayment: (state) => {
+            state.isOpenPayment = true
+        },
+        closePayment: (state) => {
+            state.isOpenPayment = false
+        },
+        OpenConfirmPay: (state) => {
+            state.isOpenConfirmPay = true
+        },
+        closeConfirmPay: (state) => {
+            state.isOpenConfirmPay = false
         }
+
     }
 })
 
-export const { add, open, close, remove } = cartSlice.actions
+export const { 
+    add, 
+    open, 
+    close, 
+    remove,
+    openDelivery,
+    closeDelivery,
+    openPayment,
+    closePayment,
+    OpenConfirmPay,
+    closeConfirmPay
+} = cartSlice.actions
 export default cartSlice.reducer
