@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 import { RootReducer } from "../store"
 import { closeDelivery, openPayment, open } from "../store/reducers/Cart"
+import { Delivery as DeliveryType } from "../../service/api"
 
 import { IMaskInput } from "react-imask"
 import { useFormik } from "formik"
@@ -11,8 +12,12 @@ import { Button } from "../Shop/styles"
 import { CartContainer, Overlay, ContainerLabel } from "../../styles"
 import { AdressInfo, InfoCepNumber } from "./styles"
 
+type Props = {
+    onSubmit: (delivery: DeliveryType) => void
+}
 
-const Delivery = () => {
+
+const Delivery = ({ onSubmit }: Props) => {
 
     const { isOpenDelivery } = 
         useSelector((state: RootReducer) => state.cart)
@@ -39,7 +44,7 @@ const Delivery = () => {
             adress: '',
             city: '',
             cep: '',
-            numberHouse: '',
+            numberHouse: 0,
             complement: ''
         },
         validationSchema: Yup.object({
@@ -56,13 +61,23 @@ const Delivery = () => {
                 .min(8, 'O campo CEP precisa ter 8 caracteres')
                 .max(9, 'O campo CEP tem que ser preenchido apenas com 8 digitos')
                 .required('O campo CEP é obrigatório'),
-            numberHouse: Yup.string()
-                .min(1, 'O campo precisar ter no minimo 1 digito')
-                .max(5, 'O campo so suporta até 5 digitos')
+            numberHouse: Yup.number()
                 .required('O campo Número é obrigatório, caso não tenha digite NÃO!')
         }),
         onSubmit: (values) => {
-            console.log(values)
+            const delivery: DeliveryType = {
+                receiver: values.personRecive,
+                adress: {
+                    description: values.adress,
+                    city: values.city,
+                    zipCode: values.cep,
+                    number: values.numberHouse,
+                    complement: values.complement
+                }
+            }
+            onSubmit(delivery)
+            openAsidePayment()
+            console.log(delivery)
         }
     })
 
@@ -155,7 +170,7 @@ const Delivery = () => {
                         <ContainerLabel>
                             <label htmlFor="numberHouse">Número</label>
                             <input 
-                                type="text" 
+                                type="number" 
                                 id="numberHouse"
                                 name="numberHouse" 
                                 value={form.values.numberHouse}
@@ -168,7 +183,9 @@ const Delivery = () => {
                         </ContainerLabel>
                     </InfoCepNumber>
                     <ContainerLabel>
-                        <label htmlFor="complement">Complemento (opcional)</label>
+                        <label htmlFor="complement">
+                            Complemento (opcional)
+                        </label>
                         <input 
                             type="text" 
                             id="complement" 
@@ -178,7 +195,7 @@ const Delivery = () => {
                         />
                     </ContainerLabel>
                     
-                    <Button onClick={openAsidePayment}>
+                    <Button type="submit">
                         Continuar com o pagamento
                     </Button>
                     <Button onClick={backCart}>Voltar para o carrinho</Button>

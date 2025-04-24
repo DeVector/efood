@@ -7,9 +7,7 @@ import Rotas from "./routes";
 import Footer from "./components/Footer";
 import store from "./components/store";
 import Cart from "./components/Cart";
-import Delivery from "./components/Delivery";
-import Payment from "./components/Payment";
-import ConfirmPay from "./components/ConfirmPay";
+import Checkout from "./components/Checkout";
 
 function App() {
   return (
@@ -19,9 +17,7 @@ function App() {
         <Rotas />
         <Footer />
         <Cart />
-        <Delivery />
-        <Payment />
-        <ConfirmPay />
+        <Checkout />
       </BrowserRouter>
     </Provider>
   );

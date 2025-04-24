@@ -2,6 +2,11 @@ import { useDispatch, useSelector } from "react-redux"
 
 import { RootReducer } from "../store"
 import { closePayment, OpenConfirmPay, openDelivery } from "../store/reducers/Cart"
+import { 
+    Payment as PaymentType, 
+    Delivery as DeliveryType,
+    usePurchaseMutation
+} from '../../service/api'
 
 import { IMaskInput } from "react-imask"
 import { useFormik } from "formik"
@@ -10,10 +15,24 @@ import * as Yup from 'yup'
 import { CartContainer, ContainerLabel, Overlay} from "../../styles"
 import { InfoCard, InfoCardSecurity, SidePayment } from "./styles"
 import { Button } from "../Shop/styles"
+import { useEffect } from "react"
 
-const Payment = () => {
+type Props = {
+    deliveryType: DeliveryType | null
+}
 
-    const { isOpenPayment } = useSelector((state: RootReducer) => state.cart) 
+const Payment = ({ deliveryType }: Props) => {
+
+    useEffect(() => {
+        console.log('Dados de delivery recebidos:', deliveryType)
+        if (!deliveryType) {
+          console.warn('deliveryType está vazio! Verifique se os dados foram salvos corretamente no App.')
+        }
+      }, [deliveryType])
+
+    const { isOpenPayment } = useSelector((state: RootReducer) => state.cart)
+
+    const [purchase, { isLoading, isError, data }] = usePurchaseMutation()
 
     const dispatch = useDispatch()
 
@@ -35,9 +54,9 @@ const Payment = () => {
         initialValues: {
             nameOfCard: '',
             numberOfCard: '',
-            securityCod: '',
-            monthExpiration: '',
-            yearExpiration: ''
+            securityCod: 0,
+            monthExpiration: 0,
+            yearExpiration: 0
         },
         validationSchema: Yup.object({
             nameOfCard: Yup.string()
@@ -47,21 +66,47 @@ const Payment = () => {
                 .min(20, 'O campo precisa ter 20 digitos')
                 .max(20, 'O campo precisa ter 20 digitos')
                 .required('O campo número do cartão é obrigatorio'),
-            securityCod: Yup.string()
+            securityCod: Yup.number()
                 .min(3, 'O campo só pode ter 3 digitos')
                 .max(3, 'O campo só pode ter 3 digitos')
                 .required('O campo CVV é obrigatório'),
-            monthExpiration: Yup.string()
-                .min(5, 'O campo mês de vencimento precisa ter 5 digitos')
-                .max(5, 'O campo mês de vencimento precisa ter 5 digitos')
+            monthExpiration: Yup.number()
+                .min(2, 'O campo mês de vencimento precisa ter 5 digitos')
+                .max(2, 'O campo mês de vencimento precisa ter 5 digitos')
                 .required('O campo mês de vencimento é obrigatório.'),
-            yearExpiration: Yup.string()
-                .min(5, 'O campo mês de vencimento precisa ter 5 digitos')
-                .max(5, 'O campo mês de vencimento precisa ter 5 digitos')
+            yearExpiration: Yup.number()
+                .min(4, 'O campo mês de vencimento precisa ter 5 digitos')
+                .max(4, 'O campo mês de vencimento precisa ter 5 digitos')
                 .required('O campo ano de vencimento é obrigatório.')
         }),
         onSubmit: (values) => {
+            if (!deliveryType) {
+                console.error('Dados de entrega não preenchidos!!')
+                return
+            }
+
+            const payment: PaymentType = {
+                card: {
+                    name: values.nameOfCard,
+                    number: values.numberOfCard,
+                    code: values.securityCod,
+                    expires: {
+                        month: values.monthExpiration,
+                        year: values.yearExpiration
+                    }
+                }
+            }
             console.log(values)
+            
+            purchase({
+                product: {id: 1, price: 49.9},
+                delivery: deliveryType,
+                payment,
+            }).then((result) => {
+                if('data' in result) {
+                    openAsideConfirmPay()
+                }
+            })
         }
     })
     return (
@@ -69,7 +114,7 @@ const Payment = () => {
             <Overlay onClick={closeAsidePayment}/>
             <SidePayment>
                 <h2>Pagamento - Valor a pagar R$ 190,90</h2>
-                <form>
+                <form onSubmit={form.handleSubmit}>
                     <ContainerLabel>
                         <label htmlFor="nameOfCard">Nome completo no cartão</label>
                         <input 
@@ -96,7 +141,7 @@ const Payment = () => {
                         <ContainerLabel>
                             <label htmlFor="securityCod">CVV</label>
                             <input 
-                                type="text" 
+                                type="number" 
                                 id="securityCod"
                                 name="securityCod"
                                 value={form.values.securityCod}
@@ -111,7 +156,7 @@ const Payment = () => {
                                 Mês de vencimento
                             </label>
                             <input 
-                                type="text" 
+                                type="number" 
                                 id="monthExpiration"
                                 name="monthExpiration"
                                 value={form.values.monthExpiration}
@@ -124,7 +169,7 @@ const Payment = () => {
                                 Ano de vencimento
                             </label>
                             <input 
-                                type="text" 
+                                type="number" 
                                 id="yearExpiration" 
                                 name="yearExpiration"
                                 value={form.values.yearExpiration}
@@ -133,10 +178,13 @@ const Payment = () => {
                             />
                         </ContainerLabel>
                     </InfoCard>
-                    <Button onClick={openAsideConfirmPay}>Finalizar pagamento</Button>
+                    <Button type="submit">Finalizar pagamento</Button>
                     <Button onClick={backDelivery}>Voltar para edição de endereço</Button>
                 </form>
             </SidePayment>
+            {isLoading && <p>Processando...</p>}
+            {isError && <p>Erro ao processar o pagamento.</p>}
+            {data && <p>Pagamento concluído com sucesso!</p>}
         </CartContainer>
     )
 }
