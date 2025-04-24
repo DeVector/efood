@@ -8,6 +8,10 @@ export const Header = styled.header`
     background-repeat: no-repeat;
     background-size: cover;
     color: ${colors.colorRed};
+
+    @media (max-width: ${breakpoints.desktop}){
+        padding: 64px 16px 40px 16px;
+    }
 `
 
 export const HeaderContainer = styled.div`
@@ -27,10 +31,17 @@ export const HeaderContainer = styled.div`
 
     @media (max-width: ${breakpoints.desktop}){
         max-width: 768px;
+        font-size: 12px;
+
+        img {
+            width: 84px;
+            height: 39px;
+        }
     }
 
     @media (max-width: ${breakpoints.tablet}) {
         display: grid;
+        max-width: 332px;
         font-size: 14px;
         text-align: center;
         align-items: center;

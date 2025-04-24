@@ -14,11 +14,11 @@ export const List = styled.ul`
 
     @media (max-width: ${breakpoints.desktop}){
         grid-template-columns: 1fr 1fr;
+        padding-left: 30px;
     }
 
-    @media (max-width: ${breakpoints.desktop}){
-        grid-template-columns: 1fr ;
-        padding-left: 30px;
+    @media (max-width: ${breakpoints.tablet}) {
+        grid-template-columns: 1fr;
     }
 `
 
