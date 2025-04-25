@@ -1,10 +1,12 @@
 import { Restaurante } from "../../pages/Home"
+import Loader from "../Loader"
 import Product from "../Product"
 
 import * as S from './styles'
 
 export type Props = {
-    catalogos: Restaurante[]
+    catalogos?: Restaurante[]
+    isLoading: boolean
 }
 
 export const getCatalogoTags = (catalogo: Restaurante) => {
@@ -21,20 +23,25 @@ export const getCatalogoTags = (catalogo: Restaurante) => {
     return tags
 }
 
-const ProductList = ({ catalogos }: Props) => {
+const ProductList = ({ catalogos, isLoading }: Props) => {
+
+    if(isLoading){
+        return <Loader />
+    }
     
     return(
         <S.Container>
             <div className="container">
                 <S.List>
-                    {catalogos.map(( dish ) => (
+                    {catalogos &&
+                    catalogos.map(( dish ) => (
                         <Product key={dish.id}
                             title={dish.titulo}
                             image={dish.capa}
                             describe={dish.descricao}
                             infos={getCatalogoTags(dish)}
                             rate={dish.avaliacao}
-                            tipo={dish.tipo}
+                            id={dish.id}
                         />
                     ))}
                 </S.List>

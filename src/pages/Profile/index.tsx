@@ -4,8 +4,8 @@ import Banner from "../../components/Banner"
 import HeaderProfile from "../../components/HeaderProfile"
 import ShopList from "../../components/ShopList"
 
-import { useEffect, useState } from "react"
-import { useGetRestaurantsQuery } from "../../service/api"
+import { useGetCardapioQuery } from "../../service/api"
+import Loader from "../../components/Loader"
 
 export type Dishies = {
     id: number
@@ -16,51 +16,28 @@ export type Dishies = {
     porcao: string
 }
 
+type RestauranteParams = {
+    id: string
+}
+
 const Profile = () => {
-    const { tipo } = useParams()
+    const { id } = useParams() as RestauranteParams
 
-    const {data: restaurantes} = useGetRestaurantsQuery()
+    const {data: restaurantes, isLoading} = useGetCardapioQuery(id)
 
-    const [opcoes, setOpcoes] = useState<Dishies[]>([])
-    const [imgBanner, setImgBanner] = useState<string>()
-
-    useEffect(() => {
-        if (tipo && restaurantes!.length > 0) {
-            const restaurantesFiltrados = restaurantes!.find(
-                (restaurante) => restaurante.tipo.toLowerCase() === tipo.toLocaleLowerCase()
-            )
-            if (restaurantesFiltrados) {
-                setImgBanner(restaurantesFiltrados.capa || '')
-                const pratosFormatados = restaurantesFiltrados.cardapio.map((prato) => ({
-                    id: prato.id,
-                    nome: prato.nome,
-                    descricao: prato.descricao,
-                    foto: prato.foto,
-                    preco: prato.preco,
-                    porcao: prato.porcao
-                }))
-                setOpcoes(pratosFormatados)
-            } else {
-                setImgBanner('')
-                setOpcoes([])
-            }
-        }
-    }, [tipo, restaurantes])
-
-    if(!restaurantes && !imgBanner){
-        return (
-            <h1>Carregando</h1>
-        )
+    if(!restaurantes){
+        return <Loader />
     }
     
     return (
         <>
             <HeaderProfile />
             <Banner 
-                image={imgBanner} 
-                infos={[`${tipo}`]} title="La Dolce Vita Trattoria"/>
-            <ShopList 
-                dishies={opcoes}
+                image={restaurantes.capa} 
+                infos={[`${restaurantes.destacado}`, `${restaurantes.tipo}`]} title="La Dolce Vita Trattoria"/>
+            <ShopList
+                isLoading={isLoading}
+                dishies={restaurantes.cardapio}
             />
         </>
     )

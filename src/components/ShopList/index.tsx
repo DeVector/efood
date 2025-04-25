@@ -11,12 +11,14 @@ import { parseToBrl } from "../../utils"
 import * as S from './styles'
 
 import btnClose from '../../assets/images/btn_close.png'
+import Loader from "../Loader"
 
 type Props = {
-    dishies: Dishies[]
+    dishies?: Dishies[]
+    isLoading: boolean
 }
 
-const ShopList = ({ dishies }: Props) => {
+const ShopList = ({ dishies, isLoading }: Props) => {
     const [modal, setModal] = useState<null | Dishies>(null)
 
     const dispatch = useDispatch()
@@ -27,12 +29,16 @@ const ShopList = ({ dishies }: Props) => {
         dispatch(open())
     }
 
+    if(isLoading){
+        <Loader />
+    }
+
     return(
         <>
             <S.Container>
                 <div className="container">
                     <S.List>
-                        { dishies.map((dish) => (
+                        {dishies && dishies.map((dish) => (
                             <Shop 
                                 key={dish.id}
                                 dish={dish}

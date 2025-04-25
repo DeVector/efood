@@ -6,7 +6,7 @@ const Rotas = () => {
     return(
         <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/profile/:tipo" element={<Profile />} />
+            <Route path="/profile/:id" element={<Profile />} />
         </Routes>
     )
 }

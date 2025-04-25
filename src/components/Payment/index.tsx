@@ -108,12 +108,12 @@ const Payment = ({ deliveryType }: Props) => {
         }
     })
 
-    const getErrorMessagem = (fieldName: string, message?: string) => {
+    const checkInputHasError = (fieldName: string, message?: string) => {
         const isTouched = fieldName in form.touched
         const isInvalid = fieldName in form.errors
+        const hasError = isTouched && isInvalid
 
-        if( isTouched && isInvalid ) return message
-        return ''
+        return hasError
     }
 
     return (
@@ -138,10 +138,8 @@ const Payment = ({ deliveryType }: Props) => {
                                     value={form.values.nameOfCard}
                                     onChange={form.handleChange}
                                     onBlur={form.handleBlur}
+                                    className={checkInputHasError("nameOfCard") ? "error" : ""}
                                 />
-                                <small> 
-                                    { getErrorMessagem('nameOfCard', form.errors.nameOfCard) } 
-                                </small>
                             </ContainerLabel>
                             <InfoCardSecurity>
                                 <ContainerLabel className="numberOfSpace">
@@ -153,10 +151,8 @@ const Payment = ({ deliveryType }: Props) => {
                                         value={form.values.numberOfCard}
                                         onChange={form.handleChange}
                                         onBlur={form.handleBlur}
+                                        className={checkInputHasError("numberOfCard") ? "error" : ""}
                                     />
-                                    <small> 
-                                    { getErrorMessagem('numberOfCard', form.errors.numberOfCard) } 
-                                </small>
                                 </ContainerLabel>
                                 <ContainerLabel>
                                     <label htmlFor="securityCod">CVV</label>
@@ -167,8 +163,8 @@ const Payment = ({ deliveryType }: Props) => {
                                         value={form.values.securityCod}
                                         onChange={form.handleChange}
                                         onBlur={form.handleBlur}
+                                        className={checkInputHasError("securityCod") ? "error" : ""}
                                     />
-                                    { getErrorMessagem('securityCod', form.errors.securityCod) }
                                 </ContainerLabel>
                             </InfoCardSecurity>
                             <InfoCard>
@@ -183,8 +179,8 @@ const Payment = ({ deliveryType }: Props) => {
                                         value={form.values.monthExpiration}
                                         onChange={form.handleChange}
                                         onBlur={form.handleBlur}
+                                        className={checkInputHasError("monthExpiration") ? "error" : ""}
                                     />
-                                    { getErrorMessagem('monthExpiration', form.errors.monthExpiration) }
                                 </ContainerLabel>
                                 <ContainerLabel>
                                     <label htmlFor="yearExpiration">
@@ -197,8 +193,8 @@ const Payment = ({ deliveryType }: Props) => {
                                         value={form.values.yearExpiration}
                                         onChange={form.handleChange}
                                         onBlur={form.handleBlur}
+                                        className={checkInputHasError("yearExpiration") ? "error" : ""}
                                     />
-                                    { getErrorMessagem('yearExpiration', form.errors.yearExpiration) }
                                 </ContainerLabel>
                             </InfoCard>
                             <Button type="submit">Finalizar pagamento</Button>

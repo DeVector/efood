@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { RootReducer } from "../../store"
 import { close, remove, openDelivery } from '../../store/reducers/Cart'
 
-import { parseToBrl } from "../../utils/index"
+import { getTotalPrice, parseToBrl } from "../../utils/index"
 
 import { Button } from "../Shop/styles"
 import { CartContainer, Overlay, SideBar } from "../../styles"
@@ -25,15 +25,15 @@ const Cart = () => {
         dispatch(openDelivery())
     }
 
-    const getTotalPrice = () => {
-        return items.reduce((acumulador, valorAtual) => {
-            return (acumulador += valorAtual.preco!)
-        }, 0)
-    }
-
     const removeItem = (id: number) => {
         dispatch(remove(id))
     }
+
+    if (items.length === 0) {
+            if(isOpen) {
+                closeCart()
+            }
+        }
 
     return(
         <CartContainer className={isOpen ? 'is-open' : ''}>
@@ -53,7 +53,7 @@ const Cart = () => {
                 </ul>
                 <S.ContainerPrices>
                     <p>Valor total</p>
-                    <p>{parseToBrl(getTotalPrice())}</p>
+                    <p>{parseToBrl(getTotalPrice(items))}</p>
                 </S.ContainerPrices>
                 <Button onClick={openAsideDelivery}>Continuar com a entrega</Button>
             </SideBar>

@@ -96,6 +96,10 @@ export const ContainerLabel = styled.div`
         font-weight: 700;
         border: 1px solid ${colors.colorOrange};
         height: 32px;
+
+        &.error {
+            border: 3px solid red;
+        }
     }
 
     IMaskInput{

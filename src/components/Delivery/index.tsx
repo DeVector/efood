@@ -94,12 +94,12 @@ const Delivery = ({ onSubmit }: Props) => {
      * fieldName: yup.string().when((values, schema) => campoDeVerificação ? schema.required('O campo é obrigatorio') : schema)
      */
 
-    const getErrorMessagem = (fieldName: string, message?: string) => {
+    const checkInputHasError = (fieldName: string, message?: string) => {
         const isTouched = fieldName in form.touched
         const isInvalid = fieldName in form.errors
+        const hasError = isTouched && isInvalid
 
-        if( isTouched && isInvalid ) return message
-        return ''
+        return hasError
     }
 
     return (
@@ -118,10 +118,8 @@ const Delivery = ({ onSubmit }: Props) => {
                             value={form.values.personRecive}
                             onChange={form.handleChange}
                             onBlur={form.handleBlur}
+                            className={checkInputHasError('personRecive') ? 'error' : ''}
                         />
-                        <small> 
-                            { getErrorMessagem('personRecive', form.errors.personRecive) } 
-                        </small>
                     </ContainerLabel>
                     <ContainerLabel>
                         <label htmlFor="adress">Endereço</label>
@@ -132,10 +130,8 @@ const Delivery = ({ onSubmit }: Props) => {
                             value={form.values.adress}
                             onChange={form.handleChange}
                             onBlur={form.handleBlur}
+                            className={checkInputHasError('adress') ? 'error' : ''}
                         />
-                        <small> 
-                            { getErrorMessagem('adress', form.errors.adress) } 
-                        </small>
                     </ContainerLabel>
                     <ContainerLabel>
                         <label htmlFor="city">Cidade</label>
@@ -146,26 +142,22 @@ const Delivery = ({ onSubmit }: Props) => {
                             value={form.values.city}
                             onChange={form.handleChange}
                             onBlur={form.handleBlur}
+                            className={checkInputHasError('city') ? 'error' : ''}
                         />
-                        <small> 
-                            { getErrorMessagem('city', form.errors.city) } 
-                        </small>
                     </ContainerLabel>
                     <InfoCepNumber>
                         <ContainerLabel>
                             <label htmlFor="cep">CEP</label>
                             <IMaskInput 
                                 id="cep" 
-                                className="maskInput"
+                                className={checkInputHasError('cep') ? 'error' : ''}
                                 mask="00000-000"
                                 name="cep" 
                                 value={form.values.cep}
                                 onChange={form.handleChange}
                                 onBlur={form.handleBlur}
+                                
                             />
-                            <small> 
-                                { getErrorMessagem('cep', form.errors.cep) } 
-                            </small>
                         </ContainerLabel>
                         <ContainerLabel>
                             <label htmlFor="numberHouse">Número</label>
@@ -176,10 +168,8 @@ const Delivery = ({ onSubmit }: Props) => {
                                 value={form.values.numberHouse}
                                 onChange={form.handleChange}
                                 onBlur={form.handleBlur}
+                                className={checkInputHasError('numberHouse') ? 'error' : ''}
                             />
-                            <small> 
-                                { getErrorMessagem('numberHouse', form.errors.numberHouse) } 
-                            </small>
                         </ContainerLabel>
                     </InfoCepNumber>
                     <ContainerLabel>

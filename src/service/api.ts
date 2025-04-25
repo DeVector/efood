@@ -49,6 +49,9 @@ const api = createApi({
         getRestaurants: builder.query<Restaurante[], void>({
             query: () => 'restaurantes'
         }),
+        getCardapio: builder.query<Restaurante, string>({
+            query: (id) => `restaurantes/${id}`
+        }),
         purchase: builder.mutation<any, PurchasePayLoad> ({
             query: (body) => ({
                 url: 'checkout',
@@ -59,6 +62,9 @@ const api = createApi({
     })
 })
 
-export const { useGetRestaurantsQuery, usePurchaseMutation } = api
+export const { 
+    useGetRestaurantsQuery, 
+    useGetCardapioQuery, 
+    usePurchaseMutation } = api
 
 export default api
