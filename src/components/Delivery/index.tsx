@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 
-import { RootReducer } from "../store"
-import { closeDelivery, openPayment, open } from "../store/reducers/Cart"
+import { RootReducer } from "../../store"
+import { closeDelivery, openPayment, open } from "../../store/reducers/Cart"
 import { Delivery as DeliveryType } from "../../service/api"
 
 import { IMaskInput } from "react-imask"

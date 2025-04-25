@@ -2,9 +2,11 @@ import { useState } from "react"
 import { useDispatch } from "react-redux"
 
 import { Dishies } from "../../pages/Profile"
-import { add, open } from '../store/reducers/Cart'
+import { add, open } from '../../store/reducers/Cart'
 
 import Shop from "../Shop"
+
+import { parseToBrl } from "../../utils"
 
 import * as S from './styles'
 
@@ -12,13 +14,6 @@ import btnClose from '../../assets/images/btn_close.png'
 
 type Props = {
     dishies: Dishies[]
-}
-
-export const formatarPreco = (preco = 0) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(preco)
 }
 
 const ShopList = ({ dishies }: Props) => {
@@ -50,7 +45,8 @@ const ShopList = ({ dishies }: Props) => {
                 </div>
             </S.Container>
             <S.Modal className={modal ? 'visible' : ''}>
-                <S.ModalContent>
+                <S.ModalContent 
+                title={`Clique no botão adicionar ao carrinho para comprar`}>
                     <img 
                         className="btn-close" 
                         src={btnClose} 
@@ -64,8 +60,8 @@ const ShopList = ({ dishies }: Props) => {
                             <p>{modal?.descricao}
                             </p>
                             <p>Serve: {modal?.porcao}</p>
-                            <button onClick={() => addToCart(modal!)}>
-                                Adicionar ao carrinho - {formatarPreco(modal?.preco)}
+                            <button title={`Clique aqui para adicionar ao carrinho o prato ${modal?.nome}`} onClick={() => addToCart(modal!)}>
+                                Adicionar ao carrinho - {parseToBrl(modal?.preco)}
                             </button>
                         </S.ModalInfo>
                     </div>

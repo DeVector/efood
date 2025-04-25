@@ -7,6 +7,7 @@ export const Card = styled.div`
     position: relative;
     max-width: 472px;
     border: 1px solid ${colors.colorRed};
+    height: 100%;
 
     .inline{
         display: flex;

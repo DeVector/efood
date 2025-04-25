@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 
-import { RootReducer } from "../store"
-import { closePayment, openDelivery, OpenConfirmPay, setOrderId } from "../store/reducers/Cart"
+import { RootReducer } from "../../store"
+import { closePayment, openDelivery, OpenConfirmPay, setOrderId } from "../../store/reducers/Cart"
 import { 
     Payment as PaymentType, 
     Delivery as DeliveryType,
@@ -16,7 +16,7 @@ import { CartContainer, ContainerLabel, Overlay} from "../../styles"
 import { InfoCard, InfoCardSecurity, SidePayment } from "./styles"
 import { Button } from "../Shop/styles"
 import ConfirmPay from "../ConfirmPay"
-import { formatarPreco } from "../ShopList"
+import { parseToBrl } from "../../utils/index"
 
 type Props = {
     deliveryType: DeliveryType | null
@@ -125,7 +125,9 @@ const Payment = ({ deliveryType }: Props) => {
                     <Overlay onClick={closeAsidePayment}/>
                     <SidePayment>
     
-                        <h2>Pagamento - Valor a pagar {formatarPreco(getTotalPrice())}</h2>
+                        <h2>
+                            Pagamento - Valor a pagar {parseToBrl(getTotalPrice())}
+                        </h2>
                         <form onSubmit={form.handleSubmit}>
                             <ContainerLabel>
                                 <label htmlFor="nameOfCard">Nome completo no cartão</label>

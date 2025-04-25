@@ -19,7 +19,7 @@ export type Restaurante = {
 }
 
 const Home = () => {
-    const { data: catalogo, isLoading } = useGetRestaurantsQuery()
+    const { data: catalogo } = useGetRestaurantsQuery()
 
     if (!catalogo) {
         return <h3>Carregando</h3>

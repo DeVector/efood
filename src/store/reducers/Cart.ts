@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { Dishies } from "../../../pages/Profile";
+import { Dishies } from "../../pages/Profile";
 
 type CartState ={
     items: Dishies[]

@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { open } from '../store/reducers/Cart'
+import { open } from '../../store/reducers/Cart'
 
 import * as S from './styles'
 
 import backHeader from '../../assets/images/fundo.png'
 import logo from '../../assets/images/logo.png'
-import { RootReducer } from '../store'
+import { RootReducer } from '../../store'
 
 const HeaderProfile = () => {
     const dispatch = useDispatch()
@@ -22,12 +22,12 @@ const HeaderProfile = () => {
         <S.Header style={{backgroundImage: `url(${backHeader})`}}>
             <S.HeaderContainer>
                 <h2>Restaurantes</h2>
-                <Link to='/'>
+                <Link title='Clique aqui para acessar a página home' to='/'>
                     <img src={logo} alt="Logo" />
                 </Link>
-                <a onClick={openCart}>
+                <button title='Clique aqui para acessar o carrinho' onClick={openCart}>
                     <h2>{items.length} produto(s) no carrinho</h2>
-                </a>
+                </button>
             </S.HeaderContainer>
         </S.Header>
     )

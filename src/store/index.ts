@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit"
 
-import api from '../../service/api'
+import api from '../service/api'
 
 import cartReducer from './reducers/Cart'
 

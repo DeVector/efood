@@ -23,9 +23,12 @@ export const HeaderContainer = styled.div`
     font-size: 18px;
     font-weight: 900;
 
-    a {
+    button {
         text-decoration: none;
         color: ${colors.colorRed};
+        background: none;
+        border: none;
+        padding: 0;
         cursor: pointer;
     }
 

@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux"
 
-import { clearOrderId, closeConfirmPay } from "../store/reducers/Cart"
+import { clearOrderId, closeConfirmPay } from "../../store/reducers/Cart"
 
 import { CartContainer, Overlay } from "../../styles"
 import { Button } from "../Shop/styles"

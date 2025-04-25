@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux"
 
-import { RootReducer } from "../store"
-import { close, remove, openDelivery } from '../store/reducers/Cart'
+import { RootReducer } from "../../store"
+import { close, remove, openDelivery } from '../../store/reducers/Cart'
 
-import { formatarPreco } from "../ShopList"
+import { parseToBrl } from "../../utils/index"
 
 import { Button } from "../Shop/styles"
 import { CartContainer, Overlay, SideBar } from "../../styles"
@@ -45,7 +45,7 @@ const Cart = () => {
                             <img src={item.foto} alt={item.nome} />
                             <div>
                                 <h3>{item.nome}</h3>
-                                <span>{formatarPreco(item.preco)}</span>
+                                <span>{parseToBrl(item.preco)}</span>
                             </div>
                             <button onClick={() => {removeItem(item.id)}} type="button"/>
                         </S.CardItem>
@@ -53,7 +53,7 @@ const Cart = () => {
                 </ul>
                 <S.ContainerPrices>
                     <p>Valor total</p>
-                    <p>{formatarPreco(getTotalPrice())}</p>
+                    <p>{parseToBrl(getTotalPrice())}</p>
                 </S.ContainerPrices>
                 <Button onClick={openAsideDelivery}>Continuar com a entrega</Button>
             </SideBar>

@@ -8,6 +8,7 @@ export const Card = styled.div`
     position: relative;
     max-width: 320px;
     border: 0;
+    height: 100%;
 
     .imgWidth {
         width: 304px;
