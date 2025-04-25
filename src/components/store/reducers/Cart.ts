@@ -8,6 +8,7 @@ type CartState ={
     isOpenDelivery: boolean
     isOpenPayment: boolean
     isOpenConfirmPay: boolean
+    orderId: string | null
 }
 
 const initialState: CartState = {
@@ -15,7 +16,8 @@ const initialState: CartState = {
     isOpen: false,
     isOpenDelivery: false,
     isOpenPayment: false,
-    isOpenConfirmPay: false
+    isOpenConfirmPay: false,
+    orderId: null
 }
 
 const cartSlice = createSlice({
@@ -57,7 +59,13 @@ const cartSlice = createSlice({
         },
         closeConfirmPay: (state) => {
             state.isOpenConfirmPay = false
-        }
+        },
+        setOrderId: (state, action: PayloadAction<string>) => {
+            state.orderId = action.payload
+        },
+        clearOrderId:(state) => {
+            state.orderId = null
+        },
 
     }
 })
@@ -72,6 +80,8 @@ export const {
     openPayment,
     closePayment,
     OpenConfirmPay,
-    closeConfirmPay
+    closeConfirmPay,
+    setOrderId,
+    clearOrderId
 } = cartSlice.actions
 export default cartSlice.reducer

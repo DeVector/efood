@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 
 import { RootReducer } from "../store"
-import { closePayment, OpenConfirmPay, openDelivery } from "../store/reducers/Cart"
+import { closePayment, openDelivery, OpenConfirmPay, setOrderId } from "../store/reducers/Cart"
 import { 
     Payment as PaymentType, 
     Delivery as DeliveryType,
@@ -15,7 +15,8 @@ import * as Yup from 'yup'
 import { CartContainer, ContainerLabel, Overlay} from "../../styles"
 import { InfoCard, InfoCardSecurity, SidePayment } from "./styles"
 import { Button } from "../Shop/styles"
-import { useEffect } from "react"
+import ConfirmPay from "../ConfirmPay"
+import { formatarPreco } from "../ShopList"
 
 type Props = {
     deliveryType: DeliveryType | null
@@ -23,21 +24,20 @@ type Props = {
 
 const Payment = ({ deliveryType }: Props) => {
 
-    useEffect(() => {
-        console.log('Dados de delivery recebidos:', deliveryType)
-        if (!deliveryType) {
-          console.warn('deliveryType está vazio! Verifique se os dados foram salvos corretamente no App.')
-        }
-      }, [deliveryType])
+    const { isOpenPayment, isOpenConfirmPay, items } = useSelector((state: RootReducer) => state.cart)
 
-    const { isOpenPayment } = useSelector((state: RootReducer) => state.cart)
-
-    const [purchase, { isLoading, isError, data }] = usePurchaseMutation()
+    const [purchase, { data }] = usePurchaseMutation()
 
     const dispatch = useDispatch()
 
     const closeAsidePayment = () => {
         dispatch(closePayment())
+    }
+
+    const getTotalPrice = () => {
+        return items.reduce((acumulador, valorAtual) => {
+            return (acumulador += valorAtual.preco!)
+        }, 0)
     }
 
     const backDelivery = () => {
@@ -63,20 +63,20 @@ const Payment = ({ deliveryType }: Props) => {
                 .min(5, 'O nome precisa ter pelo menos 5 letras')
                 .required('O campo nome completo no cartão é obrigatório'),
             numberOfCard: Yup.string()
-                .min(20, 'O campo precisa ter 20 digitos')
-                .max(20, 'O campo precisa ter 20 digitos')
+                .min(19, 'O campo precisa ter 19 digitos')
+                .max(19, 'O campo precisa ter 19 digitos')
                 .required('O campo número do cartão é obrigatorio'),
-            securityCod: Yup.number()
+            securityCod: Yup.string()
                 .min(3, 'O campo só pode ter 3 digitos')
                 .max(3, 'O campo só pode ter 3 digitos')
                 .required('O campo CVV é obrigatório'),
-            monthExpiration: Yup.number()
+            monthExpiration: Yup.string()
                 .min(2, 'O campo mês de vencimento precisa ter 5 digitos')
                 .max(2, 'O campo mês de vencimento precisa ter 5 digitos')
                 .required('O campo mês de vencimento é obrigatório.'),
-            yearExpiration: Yup.number()
-                .min(4, 'O campo mês de vencimento precisa ter 5 digitos')
-                .max(4, 'O campo mês de vencimento precisa ter 5 digitos')
+            yearExpiration: Yup.string()
+                .min(4, 'O campo mês de vencimento precisa ter 4 digitos')
+                .max(4, 'O campo mês de vencimento precisa ter 4 digitos')
                 .required('O campo ano de vencimento é obrigatório.')
         }),
         onSubmit: (values) => {
@@ -89,103 +89,123 @@ const Payment = ({ deliveryType }: Props) => {
                 card: {
                     name: values.nameOfCard,
                     number: values.numberOfCard,
-                    code: values.securityCod,
+                    code: Number(values.securityCod),
                     expires: {
-                        month: values.monthExpiration,
-                        year: values.yearExpiration
+                        month: Number(values.monthExpiration),
+                        year: Number(values.yearExpiration)
                     }
                 }
             }
-            console.log(values)
             
             purchase({
-                product: {id: 1, price: 49.9},
+                products: [{id: 1, price: 49.9}],
                 delivery: deliveryType,
                 payment,
-            }).then((result) => {
-                if('data' in result) {
-                    openAsideConfirmPay()
-                }
             })
+
+            dispatch(setOrderId(data.orderId))
+            openAsideConfirmPay()
         }
     })
+
+    const getErrorMessagem = (fieldName: string, message?: string) => {
+        const isTouched = fieldName in form.touched
+        const isInvalid = fieldName in form.errors
+
+        if( isTouched && isInvalid ) return message
+        return ''
+    }
+
     return (
-        <CartContainer className={isOpenPayment ? 'is-open' : ''}>
-            <Overlay onClick={closeAsidePayment}/>
-            <SidePayment>
-                <h2>Pagamento - Valor a pagar R$ 190,90</h2>
-                <form onSubmit={form.handleSubmit}>
-                    <ContainerLabel>
-                        <label htmlFor="nameOfCard">Nome completo no cartão</label>
-                        <input 
-                            type="text" 
-                            id="nameOfCard"
-                            name="nameOfCard"
-                            value={form.values.nameOfCard}
-                            onChange={form.handleChange}
-                            onBlur={form.handleBlur}
-                        />
-                    </ContainerLabel>
-                    <InfoCardSecurity>
-                        <ContainerLabel className="numberOfSpace">
-                            <label htmlFor="numberOfCard">Número de cartão</label>
-                            <IMaskInput 
-                                id="numberOfCard"
-                                mask="0000.0000.0000.0000"
-                                name="numberOfCard"
-                                value={form.values.numberOfCard}
-                                onChange={form.handleChange}
-                                onBlur={form.handleBlur}
-                            />
-                        </ContainerLabel>
-                        <ContainerLabel>
-                            <label htmlFor="securityCod">CVV</label>
-                            <input 
-                                type="number" 
-                                id="securityCod"
-                                name="securityCod"
-                                value={form.values.securityCod}
-                                onChange={form.handleChange}
-                                onBlur={form.handleBlur}
-                            />
-                        </ContainerLabel>
-                    </InfoCardSecurity>
-                    <InfoCard>
-                        <ContainerLabel>
-                            <label htmlFor="monthExpiration">
-                                Mês de vencimento
-                            </label>
-                            <input 
-                                type="number" 
-                                id="monthExpiration"
-                                name="monthExpiration"
-                                value={form.values.monthExpiration}
-                                onChange={form.handleChange}
-                                onBlur={form.handleBlur}
-                            />
-                        </ContainerLabel>
-                        <ContainerLabel>
-                            <label htmlFor="yearExpiration">
-                                Ano de vencimento
-                            </label>
-                            <input 
-                                type="number" 
-                                id="yearExpiration" 
-                                name="yearExpiration"
-                                value={form.values.yearExpiration}
-                                onChange={form.handleChange}
-                                onBlur={form.handleBlur}
-                            />
-                        </ContainerLabel>
-                    </InfoCard>
-                    <Button type="submit">Finalizar pagamento</Button>
-                    <Button onClick={backDelivery}>Voltar para edição de endereço</Button>
-                </form>
-            </SidePayment>
-            {isLoading && <p>Processando...</p>}
-            {isError && <p>Erro ao processar o pagamento.</p>}
-            {data && <p>Pagamento concluído com sucesso!</p>}
-        </CartContainer>
+        <>
+            {isOpenConfirmPay && data ? (
+                <ConfirmPay codPayment={data.orderId} />
+            ) : (
+                <CartContainer className={isOpenPayment ? 'is-open' : ''}>
+                    <Overlay onClick={closeAsidePayment}/>
+                    <SidePayment>
+    
+                        <h2>Pagamento - Valor a pagar {formatarPreco(getTotalPrice())}</h2>
+                        <form onSubmit={form.handleSubmit}>
+                            <ContainerLabel>
+                                <label htmlFor="nameOfCard">Nome completo no cartão</label>
+                                <input 
+                                    type="text" 
+                                    id="nameOfCard"
+                                    name="nameOfCard"
+                                    value={form.values.nameOfCard}
+                                    onChange={form.handleChange}
+                                    onBlur={form.handleBlur}
+                                />
+                                <small> 
+                                    { getErrorMessagem('nameOfCard', form.errors.nameOfCard) } 
+                                </small>
+                            </ContainerLabel>
+                            <InfoCardSecurity>
+                                <ContainerLabel className="numberOfSpace">
+                                    <label htmlFor="numberOfCard">Número de cartão</label>
+                                    <IMaskInput 
+                                        id="numberOfCard"
+                                        mask="0000.0000.0000.0000"
+                                        name="numberOfCard"
+                                        value={form.values.numberOfCard}
+                                        onChange={form.handleChange}
+                                        onBlur={form.handleBlur}
+                                    />
+                                    <small> 
+                                    { getErrorMessagem('numberOfCard', form.errors.numberOfCard) } 
+                                </small>
+                                </ContainerLabel>
+                                <ContainerLabel>
+                                    <label htmlFor="securityCod">CVV</label>
+                                    <input 
+                                        type="text" 
+                                        id="securityCod"
+                                        name="securityCod"
+                                        value={form.values.securityCod}
+                                        onChange={form.handleChange}
+                                        onBlur={form.handleBlur}
+                                    />
+                                    { getErrorMessagem('securityCod', form.errors.securityCod) }
+                                </ContainerLabel>
+                            </InfoCardSecurity>
+                            <InfoCard>
+                                <ContainerLabel>
+                                    <label htmlFor="monthExpiration">
+                                        Mês de vencimento
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="monthExpiration"
+                                        name="monthExpiration"
+                                        value={form.values.monthExpiration}
+                                        onChange={form.handleChange}
+                                        onBlur={form.handleBlur}
+                                    />
+                                    { getErrorMessagem('monthExpiration', form.errors.monthExpiration) }
+                                </ContainerLabel>
+                                <ContainerLabel>
+                                    <label htmlFor="yearExpiration">
+                                        Ano de vencimento
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="yearExpiration" 
+                                        name="yearExpiration"
+                                        value={form.values.yearExpiration}
+                                        onChange={form.handleChange}
+                                        onBlur={form.handleBlur}
+                                    />
+                                    { getErrorMessagem('yearExpiration', form.errors.yearExpiration) }
+                                </ContainerLabel>
+                            </InfoCard>
+                            <Button type="submit">Finalizar pagamento</Button>
+                            <Button onClick={backDelivery}>Voltar para edição de endereço</Button>
+                        </form>
+                    </SidePayment>
+                </CartContainer>
+            )}
+        </>
     )
 }
 

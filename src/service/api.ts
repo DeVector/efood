@@ -36,7 +36,7 @@ export type Payment = {
 }
 
 type PurchasePayLoad = {
-    product: Products
+    products: Products[]
     delivery: Delivery
     payment: Payment
 }

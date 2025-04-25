@@ -1,27 +1,30 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 
-import { RootReducer } from "../store"
-import { closeConfirmPay } from "../store/reducers/Cart"
+import { clearOrderId, closeConfirmPay } from "../store/reducers/Cart"
 
 import { CartContainer, Overlay } from "../../styles"
 import { Button } from "../Shop/styles"
 import { SideConfirm } from "./styles"
 
-const ConfirmPay = () => {
+type Props = {
+    codPayment: string
+}
 
-    const { isOpenConfirmPay } = useSelector((state: RootReducer) => state.cart)
+const ConfirmPay = ({ codPayment }: Props) => {
 
     const dispatch = useDispatch()
 
     const closeAsideConfirmPay = () => {
         dispatch(closeConfirmPay())
+        dispatch(clearOrderId())
     }
 
+
     return (
-        <CartContainer className={isOpenConfirmPay ? 'is-open' : ''}>
-            <Overlay />
+        <CartContainer className="is-open">
+            <Overlay onClick={closeAsideConfirmPay}/>
             <SideConfirm>
-                <h2>Pedido realizado - ORDER_ID</h2>
+                <h2>Pedido realizado - {codPayment} </h2>
                 <p>
                     Estamos felizes em informar que seu pedido já está em processo de preparação e, em breve, será entregue no endereço fornecido. <br /><br />
 
