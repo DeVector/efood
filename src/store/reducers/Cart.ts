@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { Dishies } from "../../pages/Profile";
-
 type CartState ={
     items: Dishies[]
     isOpen: boolean
@@ -66,6 +64,9 @@ const cartSlice = createSlice({
         clearOrderId:(state) => {
             state.orderId = null
         },
+        clearItems: (state) => {
+            state.items = []
+        }
 
     }
 })
@@ -82,6 +83,7 @@ export const {
     OpenConfirmPay,
     closeConfirmPay,
     setOrderId,
-    clearOrderId
+    clearOrderId,
+    clearItems
 } = cartSlice.actions
 export default cartSlice.reducer

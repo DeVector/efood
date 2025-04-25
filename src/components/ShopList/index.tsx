@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { useDispatch } from "react-redux"
 
-import { Dishies } from "../../pages/Profile"
 import { add, open } from '../../store/reducers/Cart'
 
 import Shop from "../Shop"

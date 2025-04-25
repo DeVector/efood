@@ -1,6 +1,4 @@
-
 import * as S from './styles'
-import { Dishies } from '../../pages/Profile'
 
 type Props = {
     dish: Dishies

@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux"
 
-import { clearOrderId, closeConfirmPay } from "../../store/reducers/Cart"
+import { clearItems, clearOrderId, closeConfirmPay } from "../../store/reducers/Cart"
 
 import { CartContainer, Overlay } from "../../styles"
 import { Button } from "../Shop/styles"
@@ -17,6 +17,7 @@ const ConfirmPay = ({ codPayment }: Props) => {
     const closeAsideConfirmPay = () => {
         dispatch(closeConfirmPay())
         dispatch(clearOrderId())
+        dispatch(clearItems())
     }
 
 

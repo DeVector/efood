@@ -7,15 +7,6 @@ import ShopList from "../../components/ShopList"
 import { useGetCardapioQuery } from "../../service/api"
 import Loader from "../../components/Loader"
 
-export type Dishies = {
-    id: number
-    foto: string
-    preco: number
-    nome: string
-    descricao: string
-    porcao: string
-}
-
 type RestauranteParams = {
     id: string
 }

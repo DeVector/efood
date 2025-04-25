@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 
 import { RootReducer } from "../../store"
-import { closePayment, openDelivery, OpenConfirmPay, setOrderId } from "../../store/reducers/Cart"
+import { closePayment, openDelivery, OpenConfirmPay } from "../../store/reducers/Cart"
 import { 
     Payment as PaymentType, 
     Delivery as DeliveryType,
@@ -16,7 +16,7 @@ import { CartContainer, ContainerLabel, Overlay} from "../../styles"
 import { InfoCard, InfoCardSecurity, SidePayment } from "./styles"
 import { Button } from "../Shop/styles"
 import ConfirmPay from "../ConfirmPay"
-import { parseToBrl } from "../../utils/index"
+import { getTotalPrice, parseToBrl } from "../../utils/index"
 
 type Props = {
     deliveryType: DeliveryType | null
@@ -26,18 +26,12 @@ const Payment = ({ deliveryType }: Props) => {
 
     const { isOpenPayment, isOpenConfirmPay, items } = useSelector((state: RootReducer) => state.cart)
 
-    const [purchase, { data }] = usePurchaseMutation()
+    const [purchase, { data, isLoading }] = usePurchaseMutation()
 
     const dispatch = useDispatch()
 
     const closeAsidePayment = () => {
         dispatch(closePayment())
-    }
-
-    const getTotalPrice = () => {
-        return items.reduce((acumulador, valorAtual) => {
-            return (acumulador += valorAtual.preco!)
-        }, 0)
     }
 
     const backDelivery = () => {
@@ -54,9 +48,9 @@ const Payment = ({ deliveryType }: Props) => {
         initialValues: {
             nameOfCard: '',
             numberOfCard: '',
-            securityCod: 0,
-            monthExpiration: 0,
-            yearExpiration: 0
+            securityCod: '',
+            monthExpiration: '',
+            yearExpiration: ''
         },
         validationSchema: Yup.object({
             nameOfCard: Yup.string()
@@ -71,11 +65,11 @@ const Payment = ({ deliveryType }: Props) => {
                 .max(3, 'O campo só pode ter 3 digitos')
                 .required('O campo CVV é obrigatório'),
             monthExpiration: Yup.string()
-                .min(2, 'O campo mês de vencimento precisa ter 5 digitos')
-                .max(2, 'O campo mês de vencimento precisa ter 5 digitos')
+                .min(2, 'O campo mês de vencimento precisa ter 2 digitos')
+                .max(2, 'O campo mês de vencimento precisa ter 2 digitos')
                 .required('O campo mês de vencimento é obrigatório.'),
             yearExpiration: Yup.string()
-                .min(4, 'O campo mês de vencimento precisa ter 4 digitos')
+                .min(2, 'O campo mês de vencimento precisa ter 2 digitos')
                 .max(4, 'O campo mês de vencimento precisa ter 4 digitos')
                 .required('O campo ano de vencimento é obrigatório.')
         }),
@@ -98,13 +92,15 @@ const Payment = ({ deliveryType }: Props) => {
             }
             
             purchase({
-                products: [{id: 1, price: 49.9}],
+                products: items.map((item) => ({
+                    id: item.id,
+                    price: item.preco
+                })),
                 delivery: deliveryType,
                 payment,
             })
-
-            dispatch(setOrderId(data.orderId))
             openAsideConfirmPay()
+
         }
     })
 
@@ -126,7 +122,7 @@ const Payment = ({ deliveryType }: Props) => {
                     <SidePayment>
     
                         <h2>
-                            Pagamento - Valor a pagar {parseToBrl(getTotalPrice())}
+                            Pagamento - Valor a pagar {parseToBrl(getTotalPrice(items))}
                         </h2>
                         <form onSubmit={form.handleSubmit}>
                             <ContainerLabel>
@@ -156,7 +152,7 @@ const Payment = ({ deliveryType }: Props) => {
                                 </ContainerLabel>
                                 <ContainerLabel>
                                     <label htmlFor="securityCod">CVV</label>
-                                    <input 
+                                    <IMaskInput 
                                         type="text" 
                                         id="securityCod"
                                         name="securityCod"
@@ -164,6 +160,7 @@ const Payment = ({ deliveryType }: Props) => {
                                         onChange={form.handleChange}
                                         onBlur={form.handleBlur}
                                         className={checkInputHasError("securityCod") ? "error" : ""}
+                                        mask="000"
                                     />
                                 </ContainerLabel>
                             </InfoCardSecurity>
@@ -172,7 +169,7 @@ const Payment = ({ deliveryType }: Props) => {
                                     <label htmlFor="monthExpiration">
                                         Mês de vencimento
                                     </label>
-                                    <input 
+                                    <IMaskInput 
                                         type="text" 
                                         id="monthExpiration"
                                         name="monthExpiration"
@@ -180,13 +177,14 @@ const Payment = ({ deliveryType }: Props) => {
                                         onChange={form.handleChange}
                                         onBlur={form.handleBlur}
                                         className={checkInputHasError("monthExpiration") ? "error" : ""}
+                                        mask="00"
                                     />
                                 </ContainerLabel>
                                 <ContainerLabel>
                                     <label htmlFor="yearExpiration">
                                         Ano de vencimento
                                     </label>
-                                    <input 
+                                    <IMaskInput 
                                         type="text" 
                                         id="yearExpiration" 
                                         name="yearExpiration"
@@ -194,10 +192,16 @@ const Payment = ({ deliveryType }: Props) => {
                                         onChange={form.handleChange}
                                         onBlur={form.handleBlur}
                                         className={checkInputHasError("yearExpiration") ? "error" : ""}
+                                        mask="00"
                                     />
                                 </ContainerLabel>
                             </InfoCard>
-                            <Button type="submit">Finalizar pagamento</Button>
+                            <Button 
+                                type="submit"
+                                disabled={isLoading}
+                            >
+                                {isLoading ? 'Finalizando compra...' : 'Finalizar pagamento'}
+                                </Button>
                             <Button onClick={backDelivery}>Voltar para edição de endereço</Button>
                         </form>
                     </SidePayment>
