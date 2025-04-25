@@ -25,7 +25,7 @@ const Profile = () => {
             <HeaderProfile />
             <Banner 
                 image={restaurantes.capa} 
-                infos={[`${restaurantes.destacado}`, `${restaurantes.tipo}`]} title="La Dolce Vita Trattoria"/>
+                infos={[restaurantes.destacado ? 'Destaque da semana' : '', `${restaurantes.tipo}`]} title="La Dolce Vita Trattoria"/>
             <ShopList
                 isLoading={isLoading}
                 dishies={restaurantes.cardapio}
